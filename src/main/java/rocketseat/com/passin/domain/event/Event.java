@@ -6,9 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import rocketseat.com.passin.controller.dto.event.EventInputDto;
 
 @Entity
 @Table(name = "events")
@@ -32,4 +35,22 @@ public class Event {
 
   @Column(nullable = false, name = "maximum_attendees")
   private Integer maximumAttendees;
+
+  public static Event parseEvent(EventInputDto eventInputDto) {
+    Event newEvent = new Event();
+    newEvent.setTitle(eventInputDto.title());
+    newEvent.setDetails(eventInputDto.details());
+    newEvent.setSlug(createSlug(eventInputDto.title()));
+    newEvent.setMaximumAttendees(eventInputDto.maximumAttendees());
+    return newEvent;
+  }
+
+  private static String createSlug(String text) {
+    String normalized = Normalizer.normalize(text, Form.NFD);
+    return normalized
+        .replaceAll("\\p{InCOMBINING_DIACRITICAL_MARKS}", "")
+        .replaceAll("[^\\w\\s]", "")
+        .replaceAll("\\s+", "-")
+        .toLowerCase();
+  }
 }
