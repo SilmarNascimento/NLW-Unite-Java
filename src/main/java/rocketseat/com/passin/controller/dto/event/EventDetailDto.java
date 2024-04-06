@@ -10,7 +10,7 @@ public record EventDetailDto(
     Integer maximumAttendees,
     Integer attendeesAmount
 ) {
-  public EventDetailDto parseDto(Event event, Integer numberOfAttendees) {
+  public static EventDetailDto parseDto(Event event, Integer numberOfAttendees) {
     return new EventDetailDto(
         event.getId(),
         event.getTitle(),
