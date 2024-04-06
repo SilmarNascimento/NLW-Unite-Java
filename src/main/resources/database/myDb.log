@@ -1,0 +1,4 @@
+/*C2*/SET SCHEMA PUBLIC
+SET SCHEMA "PUBLIC"
+INSERT INTO EVENTS VALUES('115c6d50-a16f-4559-9fb6-fea5f78cf5e1','new title','event details','new-title',500)
+COMMIT
