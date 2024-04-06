@@ -16,7 +16,6 @@ public class EventController {
 
   @GetMapping("/{eventId}")
   public ResponseEntity<String> getEvent(@PathVariable String eventId) {
-    ve
     return ResponseEntity.ok("");
   };
 
