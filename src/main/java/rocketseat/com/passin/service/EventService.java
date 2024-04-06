@@ -15,12 +15,12 @@ import rocketseat.com.passin.repositories.EventRepository;
 @RequiredArgsConstructor
 public class EventService {
   private final EventRepository eventRepository;
-  private final AttendeeRepository attendeeRepository;
+  private final AttendeeService attendeeService;
 
   public EventDetailsDto getEventDetail(String eventId) {
     Event eventFound = eventRepository.findById(eventId)
         .orElseThrow(() -> new RuntimeException("Event not found with Id: " + eventId));
-    List<Attendee> attendeeList = attendeeRepository.findByEventId(eventId);
+    List<Attendee> attendeeList = attendeeService.getAllAttendeesFromEvent(eventId);
     return EventDetailsDto.parseDto(eventFound, attendeeList.size());
   }
 
