@@ -1,6 +1,5 @@
 package rocketseat.com.passin.service;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,7 @@ import rocketseat.com.passin.controller.dto.attendee.AttendeeBadgeDto;
 import rocketseat.com.passin.controller.dto.attendee.AttendeeOutputDto;
 import rocketseat.com.passin.domain.attendee.Attendee;
 import rocketseat.com.passin.domain.checkIn.CheckIn;
-import rocketseat.com.passin.execption.AlreadyRegisteredException;
+import rocketseat.com.passin.execption.AlreadyExistsException;
 import rocketseat.com.passin.execption.NotFoundException;
 import rocketseat.com.passin.repositories.AttendeeRepository;
 import rocketseat.com.passin.repositories.CheckInRepository;
@@ -48,7 +47,7 @@ public class AttendeeService {
 
   public void verifyAttendeeSubscription(String eventId, String email) {
     Optional<Attendee> attendeeRegistered = attendeeRepository.findByEventIdAndEmail(eventId, email);
-    if (attendeeRegistered.isPresent()) throw new AlreadyRegisteredException("Attendee is already registered");
+    if (attendeeRegistered.isPresent()) throw new AlreadyExistsException("Attendee is already registered");
   }
 
   public Optional<CheckIn> findCheckIn(String attendeeId) {

@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import rocketseat.com.passin.execption.AlreadyRegisteredException;
+import rocketseat.com.passin.execption.AlreadyExistsException;
 import rocketseat.com.passin.execption.EventIsFullException;
 import rocketseat.com.passin.execption.NotFoundException;
 
@@ -17,8 +17,8 @@ public class GlobalExceptionHandler {
         .body(exception.getMessage());
   }
 
-  @ExceptionHandler(AlreadyRegisteredException.class)
-  public ResponseEntity<String> handleAlreadyRegisteredException(AlreadyRegisteredException exception) {
+  @ExceptionHandler(AlreadyExistsException.class)
+  public ResponseEntity<String> handleAlreadyRegisteredException(AlreadyExistsException exception) {
     return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
         .body(exception.getMessage());
