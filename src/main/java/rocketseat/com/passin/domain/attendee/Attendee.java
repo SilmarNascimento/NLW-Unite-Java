@@ -36,4 +36,11 @@ public class Attendee {
 
   @Column(name = "created_at")
   private LocalDateTime createdAt;
+
+  public Attendee(String name, String email, Event event, LocalDateTime createdAt) {
+    this.name = name;
+    this.email = email;
+    this.event = event;
+    this.createdAt = createdAt;
+  }
 }

@@ -14,6 +14,18 @@ public record AttendeeOutputDto(
     LocalDateTime createdAt,
     LocalDateTime checkedInAt
 ) {
+  public static AttendeeOutputDto parseDto(Attendee attendee, Function<String, Optional<CheckIn>> findCheckIn) {
+    Optional<CheckIn> checkIn = findCheckIn.apply(attendee.getId());
+    LocalDateTime checkedInAt = checkIn.isPresent() ? checkIn.get().getCreatedAt() : null;
+    return new AttendeeOutputDto(
+        attendee.getId(),
+        attendee.getName(),
+        attendee.getEmail(),
+        attendee.getCreatedAt(),
+        checkedInAt
+    );
+  }
+
   public static List<AttendeeOutputDto> parseDto(List<Attendee> attendees, Function<String, Optional<CheckIn>> findCheckIn) {
     return attendees.stream().map((attendee) -> {
       Optional<CheckIn> checkIn = findCheckIn.apply(attendee.getId());
