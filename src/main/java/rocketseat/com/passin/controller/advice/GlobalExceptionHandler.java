@@ -1,4 +1,4 @@
-package rocketseat.com.passin.controller.adivice;
+package rocketseat.com.passin.controller.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
