@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(AlreadyExistsException.class)
   public ResponseEntity<String> handleAlreadyRegisteredException(AlreadyExistsException exception) {
     return ResponseEntity
-        .status(HttpStatus.BAD_REQUEST)
+        .status(HttpStatus.CONFLICT)
         .body(exception.getMessage());
   }
 

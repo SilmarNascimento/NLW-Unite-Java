@@ -18,7 +18,7 @@ import rocketseat.com.passin.repositories.CheckInRepository;
 @RequiredArgsConstructor
 public class AttendeeService {
   private final AttendeeRepository attendeeRepository;
-  private final CheckInRepository checkInRepository;
+  private final CheckInService checkInService;
 
   public List<Attendee> getAllAttendeesFromEvent(String eventId) {
     return attendeeRepository.findAllByEventId(eventId);
@@ -26,16 +26,20 @@ public class AttendeeService {
 
   public List<AttendeeOutputDto> getEventAttendees(String eventId) {
     List<Attendee> attendeeList = getAllAttendeesFromEvent(eventId);
-    return AttendeeOutputDto.parseDto(attendeeList, this::findCheckIn);
+    return AttendeeOutputDto.parseDto(attendeeList, checkInService::getCheckIn);
   }
 
-  public Attendee registerAttendee(Attendee newAttendee) {
-    return attendeeRepository.save(newAttendee);
+  public void registerAttendee(Attendee newAttendee) {
+    attendeeRepository.save(newAttendee);
+  }
+
+  public void checkInAttendee(String attendeeId) {
+    Attendee attendeeFound = getAttendeebyId(attendeeId);
+    checkInService.registerCheckIn(attendeeFound);
   }
 
   public AttendeeBadgeDto getAttendeeBadge(String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
-    Attendee attendeeFound = attendeeRepository.findById(attendeeId)
-        .orElseThrow(() -> new NotFoundException("Attendee not found with id: " + attendeeId));
+    Attendee attendeeFound = getAttendeebyId(attendeeId);
 
     String uri = uriComponentsBuilder
         .path("/attendees/{attendeeId}/check-in")
@@ -50,7 +54,8 @@ public class AttendeeService {
     if (attendeeRegistered.isPresent()) throw new AlreadyExistsException("Attendee is already registered");
   }
 
-  public Optional<CheckIn> findCheckIn(String attendeeId) {
-    return checkInRepository.findByAttendeeId(attendeeId);
+  private Attendee getAttendeebyId(String attendeeId) {
+    return attendeeRepository.findById(attendeeId)
+        .orElseThrow(() -> new NotFoundException("Attendee not found with id: " + attendeeId));
   }
 }
